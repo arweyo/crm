@@ -1,118 +1,268 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import Layout from '@/components/Layout'
+import { useState, useEffect } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import Link from 'next/link';
 
-const inter = Inter({ subsets: ['latin'] })
+const Index = () => {
+  const [users, setUsers] = useState([])
+  const [isNewUser, setIsNewUser] = useState(false)
+  const [isShowMore, setIsShowMore] = useState(false)
+  const [showMoreUser, setShowMoreUser] = useState(null)
 
-export default function Home() {
-  return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+  const deleteUser = id => {
+    console.log('eliminando ', id)
+    setUsers(users.filter(user => user.id !== id))
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+  }
+  const showMore = id => {
+    console.log('ver más ', id)
+    setShowMoreUser(users.filter(user => user.id === id)[0])
+    console.log(users.filter(user => user.id === id)[0])
+    setIsShowMore(true)
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+  }
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      username: '',
+      lastname: '',
+      firstname: ''
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().required('El email no puede ir vacío'),
+      firstname: Yup.string().required('El password es obligatorio'),
+      lastname: Yup.string().required('El password es obligatorio'),
+      username: Yup.string().required('El password es obligatorio')
+    }),
+    onSubmit: async valores => {
+      const ids = users.map(object => {
+        return object.id;
+      });
+      console.log(ids); // 👉️ [
+
+      const max = Math.max(...ids);
+
+      console.log(max)
+      setIsNewUser(false)
+      const { firstname, lastname, ...rest } = valores
+      const name = { firstname: firstname, lastname: lastname }
+      const id = { id: Math.max + 1 }
+      const obj = { ...rest, name, id: max + 1 }
+      console.log(obj)
+
+      setUsers([...users, obj])
+
+    }
+  })
+
+
+  const fetchUsers = async () => {
+    const req = fetch('https://fakestoreapi.com/users')
+      .then(res => res.json())
+      .then(json => {
+        setUsers(json)
+        console.log(json.map((obj) => {
+          const { password, ...rest } = obj
+          return rest
+        }))
+      })
+  }
+  useEffect(() => {
+    fetchUsers()
+  }, [])
+
+  return (<div>
+    <Layout>
+      {isNewUser === false && isShowMore === false ? (
+        <>
+          <h1 className='text-2xl text-gray-800 font-light'>Usuarios</h1>
+          <button className='bg-blue-800 py-2 px-5 mt-5 inline-block text-white rounded text-sm hover:bg-gray-800 uppercase font-bold'
+            onClick={() => setIsNewUser(true)}
+            type="button">Nuevo Usuario</button>
+
+          <button className='bg-blue-800 py-2 px-5 mt-5 ml-2 inline-block text-white rounded text-sm hover:bg-gray-800 uppercase font-bold'
+            onClick={() => window.location.reload(false)}
+            type="button">Refrescar</button>
+
+          <table className='table-auto shadow-md mt-10 w-full w-lg'>
+            <thead className='bg-gray-800'>
+              <tr className='text-white'>
+                <th className='w-1/5 py-2'>Usuario</th>
+                <th className='w-1/5 py-2'>Correo</th>
+                <th className='w-1/5 py-2'>
+                  Id
+                </th>
+                <th className='w-1/5 py-2'>Nombre</th>
+                <th className='w-1/5 py-2'>Apellido</th>
+                <th className='w-1/5 py-2'>Eliminar</th>
+                <th className='w-1/5 py-2'>Ver más</th>
+
+              </tr>
+            </thead>
+            <tbody className='bg-white'>
+              {
+                users.map(user => (
+                  <tr key={user.id}>
+                    <td className='border px-4 py-2'>{user.username}</td>
+                    <td className='border px-4 py-2'>{user.email}</td>
+                    <td className='border px-4 py-2'>{user.id}</td>
+                    <td className='border px-4 py-2'>{user.name.firstname}</td>
+                    <td className='border px-4 py-2'>{user.name.lastname}</td>
+                    <td className='border px-4 py-2'>
+                      <button type="button"
+                        className='flex justify-center items-center bg-red-800 py-2 px-4 w-full text-white rounded text-xs uppercase font-bold'
+                        onClick={() => deleteUser(user.id)}
+                      >
+                        Eliminar
+                      </button>
+
+                    </td>
+                    <td className='border px-4 py-2'>
+                      <button type="button"
+                        className='flex justify-center items-center bg-green-800 py-2 px-4 w-full text-white rounded text-xs uppercase font-bold'
+                        onClick={() => showMore(user.id)}
+                      >
+                        Ver más
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              }
+
+            </tbody>
+          </table>
+        </>
+
+
+      ) :
+
+        (
+
+          <>
+            {isShowMore === false ? (<>
+              <h1 className='text-center text-2xl text-black font-light'>Nuevo usuario</h1>
+              <div className="flex justify-center mt-5">
+                <div className='w-full max-w-sm'>
+                  <form
+                    className='bg-white rounded shadow-md px-8 pt-6 pb-8 mb-4'
+                    onSubmit={formik.handleSubmit}
+                  >
+                    <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='username'>
+                      Nombre de usuario
+                    </label>
+                    <input
+                      className='shadow appearence-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                      id='username'
+                      type='text'
+                      placeholder="Nombre Usuario"
+                      value={formik.values.username}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                    <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='firstname'>
+                      Nombre
+                    </label>
+                    <input
+                      className='shadow appearence-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                      id='firstname'
+                      type='text'
+                      placeholder="Nombre"
+                      value={formik.values.firstname}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                    <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='lastname' inline>
+                      Apellido
+                    </label>
+                    <input
+                      className='shadow appearence-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                      id='lastname'
+                      type='text'
+                      placeholder="Apellido"
+                      value={formik.values.lastname}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+
+                    <div className='mb-4'>
+                      <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='email'>
+                        Email
+                      </label>
+                      <input
+                        className='shadow appearence-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                        id='email'
+                        type='email'
+                        placeholder="Email Usuario"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.email}
+                      />
+                    </div>
+                    {formik.touched.email && formik.errors.email ? (
+                      <div className='my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4'>
+                        <p className='font-bold'>Error</p>
+                        <p>{formik.errors.email}</p>
+                      </div>
+
+                    ) : null}
+
+                    <input
+                      type='submit'
+                      className='bg-gray-800 w-full mt-5 p-2 text-white uppercase hover:bg-900'
+                      value="Registrar usuario"
+                    />
+                  </form>
+
+                </div>
+              </div> </>) :
+              <>
+                <h1 className='text-center text-2xl text-black font-light'>Información de usuario</h1>
+                <div className="flex justify-center mt-5">
+                  <div className='w-full max-w-sm'>
+                    <form
+                      className='bg-white rounded shadow-md px-8 pt-6 pb-8 mb-4'
+                      onSubmit={() => setIsShowMore(false)}
+                    >
+                      <p> <b>Id:</b> {showMoreUser.id}</p>
+                      <p> <b>Nombre de usuario:</b> {showMoreUser.username}</p>
+                      <p> <b>Nombre:</b> {showMoreUser.name.firstname}</p>
+                      <p> <b>Apellido:</b> {showMoreUser.name.lastname}</p>
+                      <p> <b>Email:</b> {showMoreUser.email}</p>
+                      <p> <b>Teléfono:</b> {showMoreUser.phone}</p>
+                      <p> <b>Ciudad:</b> {showMoreUser.address.city}</p>
+                      <p> <b>Calle:</b> {showMoreUser.address.street}</p>
+                      <p> <b>Número:</b> {showMoreUser.address.number}</p>
+                      <p> <b>Código postal:</b> {showMoreUser.address.zipcode}</p>
+                      <p> <b>Geolocalización:</b> {showMoreUser.address.geolocation.lat}, {showMoreUser.address.geolocation.long}</p>
+
+
+
+
+                      
+
+
+                      
+                      <input
+                        type='submit'
+                        className='bg-gray-800 w-full mt-5 p-2 text-white uppercase hover:bg-900'
+                        value="Aceptar"
+                      />
+                    </form>
+                  </div>
+                </div>
+              </>
+            }
+          </>
+        )
+
+
+      }
+    </Layout>
+  </div>);
 }
+
+export default Index;
